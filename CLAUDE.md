@@ -48,7 +48,19 @@ This compiles without running and surfaces errors. Treat compile failures the
 way you would type errors in TypeScript: fix them before moving on. Do not
 declare work complete on a `.nvgt` file you have not compiled.
 
-If `nvgt` is not on PATH, ask the user where it lives rather than guessing.
+### Finding the `nvgt` binary
+
+Check these in order before giving up:
+
+1. **PATH:** `command -v nvgt` (or `which nvgt` / `where nvgt`).
+2. **macOS standard install:** `/Applications/nvgt.app/Contents/MacOS/nvgt`.
+   NVGT ships as a regular `.app` bundle; the CLI is the binary inside.
+3. **Windows standard install:** `C:\nvgt\nvgt.exe` (the installer's
+   default location).
+4. **Linux:** PATH usually; otherwise ask.
+
+Only ask the user once you've checked the standard locations for the
+current OS. Do not assume "not on PATH" means "not installed."
 
 ## When porting from BGT
 

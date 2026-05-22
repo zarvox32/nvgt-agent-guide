@@ -22,3 +22,18 @@ that exact thing") over vague guidance.
 ---
 
 <!-- Add entries below this line. -->
+
+## Finding `nvgt` on macOS when it's not on PATH
+
+**What goes wrong:** `which nvgt` / `command -v nvgt` returns nothing, agent
+concludes NVGT isn't installed and asks the user (or gives up). User is
+mildly annoyed — it was installed all along.
+
+**Why:** NVGT ships on macOS as a regular `.app` bundle that the user drags
+into `/Applications`. The bundle doesn't symlink its CLI binary onto PATH,
+so `which` won't find it even on a perfectly normal install.
+
+**Fix:** On macOS, before asking, try
+`/Applications/nvgt.app/Contents/MacOS/nvgt`. That's the CLI entry point
+inside the bundle. The same `-c`/`-h`/script-runner interface as on Windows
+or Linux applies.

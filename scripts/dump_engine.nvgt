@@ -1,0 +1,24 @@
+// Dump NVGT's complete engine configuration (every registered class,
+// function, enum, and global) using AngelScript's raw WriteConfigToStream
+// format. This is the source dump from which the human-readable
+// ref/api-export/*.txt files are derived by a post-processing step.
+//
+// Run with:   nvgt scripts/dump_engine.nvgt [-- <output_path>]
+// Default output: ./engine_dump.txt  (relative to the script's directory,
+//                 which is what NVGT uses as CWD)
+
+#pragma console
+
+void main() {
+	string out_path = ARGS.length() > 1 ? ARGS[1] : "engine_dump.txt";
+	file f;
+	if (!f.open(out_path, "wb")) {
+		cout << "error: could not open " << out_path << " for writing\n";
+		exit(1);
+	}
+	script_dump_engine_configuration(f);
+	f.flush();
+	uint64 bytes = f.size;
+	f.close();
+	cout << "wrote " << out_path << " (" << bytes << " bytes)\n";
+}
