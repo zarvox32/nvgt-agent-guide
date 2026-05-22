@@ -1,3 +1,8 @@
 .DS_Store
 *.swp
 *.swo
+
+# NVGT compile artifacts (created by `nvgt -c`)
+scripts/*.dmg
+scripts/*.app
+scripts/*.exe
