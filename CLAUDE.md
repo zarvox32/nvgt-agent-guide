@@ -18,9 +18,16 @@ training data may be stale.
 - **`ref/api-export/classes.txt`** — every NVGT class with full method and
   property signatures, in AngelScript declaration syntax. Look up the exact
   signature of any method here before calling it.
+- **`ref/api-export/classes/<Name>.txt`** — one file per class (same content
+  as `classes.txt`). Read this when you only need a single class and don't
+  want to grep the full bundle.
 - **`ref/api-export/functions.txt`** — every top-level function and `funcdef`
   (callback type) signature. Same pattern: look up before calling.
-- **`ref/api-export/enums.txt`** — enum constants (flat list).
+- **`ref/api-export/enums.txt`** — enum constants flattened, without
+  per-enum headers. To find which enum a constant belongs to, look at
+  `enums/<EnumName>.txt` instead.
+- **`ref/api-export/enums/<Name>.txt`** — one file per enum, with the enum
+  name in the filename.
 - **`ref/api-export/globals.txt`** — global constants.
 - **`ref/examples/`** — small, idiomatic NVGT scripts curated from the NVGT
   test suite. Prefer patterns you see here over patterns you invent.

@@ -1,0 +1,16 @@
+// Print the local NVGT install's version info as key: value lines.
+//
+// refresh-ref.sh runs this and captures the output into VERSION.txt at the
+// repo root, so consumers can see what NVGT version ref/api-export/ matches.
+
+#pragma console
+
+void main() {
+	cout << "nvgt-version: " << NVGT_VERSION << "\n";
+	cout << "nvgt-version-major: " << NVGT_VERSION_MAJOR << "\n";
+	cout << "nvgt-version-minor: " << NVGT_VERSION_MINOR << "\n";
+	cout << "nvgt-version-patch: " << NVGT_VERSION_PATCH << "\n";
+	cout << "nvgt-version-type: " << NVGT_VERSION_TYPE << "\n";
+	cout << "nvgt-version-commit: " << NVGT_VERSION_COMMIT_HASH << "\n";
+	cout << "nvgt-version-build-time: " << NVGT_VERSION_BUILD_TIME << "\n";
+}

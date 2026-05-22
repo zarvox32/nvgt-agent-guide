@@ -68,3 +68,19 @@ are two generator scripts in `scripts/`:
 - **Refresh:** `./scripts/refresh-ref.sh`
 - **Last regenerated:** 2026-05-22 against NVGT installed at
   `/Applications/nvgt.app` (AngelScript 2.39.0 WIP per the dump header).
+- **Version stamp:** `refresh-ref.sh` writes a `VERSION.txt` at the repo
+  root recording the exact NVGT version (incl. commit hash and build time)
+  the dump matches. Consumers can compare it against their own NVGT install
+  to spot drift.
+
+### Caveat: plugin coverage
+
+`script_dump_engine_configuration` only enumerates APIs that were
+**registered into the local NVGT build**. NVGT's plugin-provided APIs
+(`nvgt_curl`, `git2nvgt`, `nvgt_sqlite`, `systemd_notify`, `unicode`, etc.)
+appear in the dump only when those plugins were compiled in. If your
+local NVGT is a stripped-down build, `ref/api-export/` will undercount
+real APIs — and downstream consumers using your dump will see the same
+gaps. The vendored `generate_engine_dump.nvgt` carries `#pragma plugin`
+directives for the standard set so the script itself fails fast if any
+are missing on your install.

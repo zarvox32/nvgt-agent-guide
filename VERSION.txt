@@ -1,0 +1,10 @@
+nvgt-version: 0.90.0-dev
+nvgt-version-major: 0
+nvgt-version-minor: 90
+nvgt-version-patch: 0
+nvgt-version-type: dev
+nvgt-version-commit: 71bc0d5b096d3a3a38ebdd4484691175287cac5a
+nvgt-version-build-time: Friday, May 01, 2026 at 12:31:35 PM UTC
+angelscript-version: AngelScript 2.39.0 WIP
+regenerated-on: 2026-05-22T21:23:23Z
+examples-commit: 71bc0d5b096d3a3a38ebdd4484691175287cac5a

@@ -13,12 +13,16 @@ guide does that work for you.
 - **`ref/`** — authoritative reference material:
   - `nvgt.txt`: full language + stdlib reference, pulled from `nvgt.dev/docs`.
   - `api-export/`: signature dumps for every class, function, enum, and global
-    in NVGT, in AngelScript declaration syntax.
+    in NVGT, in AngelScript declaration syntax (one flat file per kind, plus
+    per-class and per-enum subdirectories for targeted reads).
   - `examples/`: ~110 small example scripts from NVGT's own test suite.
 - **`docs/idioms.md` and `docs/pitfalls.md`** — distilled lessons that grow
   over time. Empty at first; the whole point is for the community to fill them.
-- **`scripts/refresh-ref.sh`** — re-pulls `nvgt.txt` and the examples from
-  upstream. Run periodically to stay current.
+- **`VERSION.txt`** — records the NVGT version (and commit hash, and
+  AngelScript version) the current `ref/api-export/` was generated against.
+  Check this to see if the guide is stale relative to your NVGT install.
+- **`scripts/refresh-ref.sh`** — re-pulls `nvgt.txt`, examples, and the
+  api-export from a local NVGT install. Run periodically to stay current.
 
 ## How to use it in your NVGT project
 

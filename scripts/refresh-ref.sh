@@ -59,6 +59,16 @@ cp -R "$DUMP_OUT/classes"    "$REF/api-export/classes"
 cp -R "$DUMP_OUT/enums"      "$REF/api-export/enums"
 echo "    $(ls "$REF/api-export/classes" | wc -l | tr -d ' ') classes, $(ls "$REF/api-export/enums" | wc -l | tr -d ' ') enums"
 
+echo "==> Writing $HERE/VERSION.txt..."
+{
+	"$NVGT" "$HERE/scripts/dump_version.nvgt"
+	# AngelScript version lives on the first line of engine_dump.txt as `// AngelScript X.Y.Z ...`.
+	head -1 "$REF/api-export/engine_dump.txt" | sed 's|^// |angelscript-version: |'
+	echo "regenerated-on: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+	echo "examples-commit: $COMMIT"
+} > "$HERE/VERSION.txt"
+cat "$HERE/VERSION.txt" | sed 's/^/    /'
+
 echo
-echo "Done. Don't forget to update SOURCES.md with today's date and the"
-echo "examples commit hash above ($COMMIT)."
+echo "Done. SOURCES.md's last-fetched dates are not auto-updated — bump them"
+echo "manually if you care about the prose matching the data."
