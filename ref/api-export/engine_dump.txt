@@ -910,9 +910,57 @@ enumval system_tray_menu_item_type SYSTEM_TRAY_ITEM 0
 enumval system_tray_menu_item_type SYSTEM_TRAY_CHECKBOX 1
 enumval system_tray_menu_item_type SYSTEM_TRAY_SEPARATOR 2
 enumval system_tray_menu_item_type SYSTEM_TRAY_SUBMENU 3
+enum pack_open_mode
+enumval pack_open_mode SQLITE_PACK_OPEN_MODE_READ_ONLY 1
+enumval pack_open_mode SQLITE_PACK_OPEN_MODE_READ_WRITE 2
+enumval pack_open_mode SQLITE_PACK_OPEN_MODE_CREATE 4
+enumval pack_open_mode SQLITE_PACK_OPEN_MODE_URI 64
+enumval pack_open_mode SQLITE_PACK_OPEN_MODE_MEMORY 128
+enumval pack_open_mode SQLITE_PACK_OPEN_MODE_NO_MUTEX 32768
+enumval pack_open_mode SQLITE_PACK_OPEN_MODE_FULL_MUTEX 65536
+enumval pack_open_mode SQLITE_PACK_OPEN_MODE_SHARED_CACHE 131072
+enumval pack_open_mode SQLITE_PACK_OPEN_MODE_PRIVATE_CACHE 262144
+enumval pack_open_mode SQLITE_PACK_OPEN_MODE_NO_FOLLOW 16777216
+enum sqlite_pack_find_mode
+enumval sqlite_pack_find_mode SQLITE_PACK_FIND_MODE_LIKE 0
+enumval sqlite_pack_find_mode SQLITE_PACK_FIND_MODE_GLOB 1
+enumval sqlite_pack_find_mode SQLITE_PACK_FIND_MODE_REGEXP 2
+namespace "unicode"
+enum general_category
+enumval general_category CN 0
+enumval general_category LU 1
+enumval general_category LL 2
+enumval general_category LT 3
+enumval general_category LM 4
+enumval general_category LO 5
+enumval general_category MN 6
+enumval general_category MC 7
+enumval general_category ME 8
+enumval general_category ND 9
+enumval general_category NL 10
+enumval general_category NO 11
+enumval general_category PC 12
+enumval general_category PD 13
+enumval general_category PS 14
+enumval general_category PE 15
+enumval general_category PI 16
+enumval general_category PF 17
+enumval general_category PO 18
+enumval general_category SM 19
+enumval general_category SC 20
+enumval general_category SK 21
+enumval general_category SO 22
+enumval general_category ZS 23
+enumval general_category ZL 24
+enumval general_category ZP 25
+enumval general_category CC 26
+enumval general_category CF 27
+enumval general_category CS 28
+enumval general_category CO 29
 
 // Types
 access 1
+namespace ""
 objtype "string" 7938
 objtype "any" 5
 objtype "array<T>" 69
@@ -1157,6 +1205,17 @@ objtype "game_window" 1
 objtype "system_tray_menu_item" 1
 objtype "system_tray_menu" 1
 objtype "system_tray" 1
+access 40
+objtype "internet_request" 1
+access 20000
+objtype "git_repository" 1
+objtype "git_repository_entry" 1
+objtype "git_repository_commit" 1
+objtype "git_repository_commit_iterator" 1
+access 10000
+objtype "sqlite3statement" 1
+objtype "sqlite3" 1
+objtype "sqlite_pack" 1
 access ffffffff
 funcdef "bool array<T>::less(const T&in a, const T&in b)"
 funcdef "float physics_raycast_callback(const raycast_info&in info)"
@@ -1180,6 +1239,8 @@ funcdef "void thread_callback(dictionary@ args)"
 funcdef "uint timer_callback(string timer_id, string user_data)"
 funcdef "void system_tray_callback(system_tray_menu_item@ item)"
 funcdef "void coroutine(dictionary@)"
+funcdef "int git_repository_match_callback(git_repository@ repo, const string&in path, const string&in user_data)"
+funcdef "int sqlite3authorizer(string, int, string, string, string, string)"
 
 // Template type members
 access 1
@@ -1450,6 +1511,43 @@ objmthd "string" "uint unpacket(uint, const ?&out, const ?&out, const ?&out, con
 objmthd "string" "uint unpacket(uint, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out)"
 objmthd "string" "uint unpacket(uint, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out)"
 objmthd "string" "uint unpacket(uint, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out, const ?&out)"
+access 10000
+objmthd "string" "string lowercase() const"
+objmthd "string" "string uppercase() const"
+objmthd "string" "string casefold() const"
+objmthd "string" "string lowercase(const string&inout) const"
+objmthd "string" "string uppercase(const string&inout) const"
+objmthd "string" "string titlecase() const"
+objmthd "string" "string titlecase(const string&inout) const"
+objmthd "string" "int compare(const string&inout, const bool) const"
+objmthd "string" "int collate(const string&inout, const bool) const"
+objmthd "string" "bool is_valid_unicode() const"
+objmthd "string" "string to_nfc() const"
+objmthd "string" "string to_nfd() const"
+objmthd "string" "string to_nfkc() const"
+objmthd "string" "string to_nfkd() const"
+objmthd "string" "string to_unaccented() const"
+objmthd "string" "bool is_nfc() const"
+objmthd "string" "bool is_nfd() const"
+objmthd "string" "bool is_nfkc() const"
+objmthd "string" "bool is_nfkd() const"
+objmthd "string" "unicode::general_category general_category() const"
+objmthd "string" "bool is_alphabetic() const"
+objmthd "string" "bool is_numeric() const"
+objmthd "string" "bool is_alphanumeric() const"
+objmthd "string" "bool is_whitespace() const"
+objmthd "string" "bool is_reserved() const"
+objmthd "string" "bool is_valid_char() const"
+objmthd "string" "bool is_valid_scalar() const"
+objmthd "string" "bool is_supplementary() const"
+objmthd "string" "bool is_noncharacter() const"
+objmthd "string" "bool is_surrogate() const"
+objmthd "string" "bool is_private_use() const"
+objmthd "string" "bool is_control() const"
+objmthd "string" "string get_script() const"
+objmthd "string" "bool has_script(const string&inout) const"
+objmthd "string" "array<uint64>@ find(const string&inout, const bool) const"
+access 1
 objbeh "any" 3 "any@ any()"
 objbeh "any" 3 "any@ any(?&in)"
 objbeh "any" 3 "any@ any(const int64&in)"
@@ -3615,6 +3713,8 @@ objbeh "pack_interface" 5 "void $beh5()"
 objbeh "pack_interface" 6 "void $beh6()"
 access 2
 objmthd "pack_interface" "pack_file@ opCast()"
+access 10000
+objmthd "pack_interface" "sqlite_pack@ opCast()"
 access 4
 objbeh "json_object" 3 "json_object@ json_object()"
 objbeh "json_object" 3 "json_object@ json_object(json_object@ other)"
@@ -7569,6 +7669,172 @@ objmthd "system_tray" "bool get_valid() const property"
 objmthd "system_tray" "void set_icon(graphic@ icon)"
 objmthd "system_tray" "void set_tooltip(const string&in tooltip)"
 objmthd "system_tray" "system_tray_menu@ get_menu() property"
+access 40
+objbeh "internet_request" 3 "internet_request@ internet_request()"
+objbeh "internet_request" 3 "internet_request@ internet_request(const string&in, bool = true)"
+objbeh "internet_request" 3 "internet_request@ internet_request(const string&in, const string&in, bool = true)"
+objbeh "internet_request" 3 "internet_request@ internet_request(const string&in, const string&in, const string&in, bool = true)"
+objbeh "internet_request" 5 "void $beh5()"
+objbeh "internet_request" 6 "void $beh6()"
+objmthd "internet_request" "bool perform()"
+objmthd "internet_request" "bool perform(const string&in)"
+objmthd "internet_request" "bool post(const string&in, const string&in, const string&in = '')"
+objmthd "internet_request" "bool mail(const string&in, const string&in, const string&in, const string&in) const"
+objmthd "internet_request" "void set_url(const string&in) const"
+objmthd "internet_request" "void set_path(const string&in) const"
+objmthd "internet_request" "void set_authentication(string, string)"
+objmthd "internet_request" "void set_payload(const string&in) const"
+objmthd "internet_request" "void set_mail(const string&in, const string&in) const"
+objmthd "internet_request" "void set_header(const string&in, const string&in) const"
+objmthd "internet_request" "void reset() const"
+objprop "internet_request" "const bool no_curl" 0 0
+objprop "internet_request" "const bool complete" 0 0
+objprop "internet_request" "const bool in_progress" 0 0
+objprop "internet_request" "bool follow_redirects" 0 0
+objprop "internet_request" "int max_redirects" 0 0
+objprop "internet_request" "const double bytes_downloaded" 0 0
+objprop "internet_request" "const double download_size" 0 0
+objprop "internet_request" "const double download_percent" 0 0
+objprop "internet_request" "const double bytes_uploaded" 0 0
+objprop "internet_request" "const double upload_size" 0 0
+objprop "internet_request" "const double upload_percent" 0 0
+objprop "internet_request" "const int status_code" 0 0
+objprop "internet_request" "const double total_time" 0 0
+objprop "internet_request" "const string url" 0 0
+objprop "internet_request" "const string final_url" 0 0
+objprop "internet_request" "const string response_body" 0 0
+objprop "internet_request" "const string response_headers" 0 0
+objprop "internet_request" "string debug_file" 0 0
+objprop "internet_request" "string user_agent" 0 0
+objprop "internet_request" "const string path" 0 0
+objprop "internet_request" "const string auth_username" 0 0
+objprop "internet_request" "const string auth_password" 0 0
+access 20000
+objbeh "git_repository" 3 "git_repository@ git_repository()"
+objbeh "git_repository" 5 "void $beh5()"
+objbeh "git_repository" 6 "void $beh6()"
+objmthd "git_repository" "int open(const string&in path)"
+objmthd "git_repository" "int create(const string&in path)"
+objmthd "git_repository" "bool close()"
+objmthd "git_repository" "int add(const string&in path)"
+objmthd "git_repository" "int add_all(array<string>@ paths, int flags = 0)"
+objmthd "git_repository" "int add_all(array<string>@ paths, int flags, git_repository_match_callback@ callback, const string&in callback_data = \"\")"
+objmthd "git_repository" "int update_all(array<string>@ paths)"
+objmthd "git_repository" "int update_all(array<string>@ paths, git_repository_match_callback@ callback, const string&in callback_data = \"\")"
+objmthd "git_repository" "int remove(const string&in path)"
+objmthd "git_repository" "int remove_all(array<string>@ paths)"
+objmthd "git_repository" "int remove_all(array<string>@ paths, git_repository_match_callback@ callback, const string&in callback_data = \"\")"
+objmthd "git_repository" "git_repository_commit@ commit(const string&in author, const string&in author_email, const string&in message, const string&in ref = \"HEAD\")"
+objmthd "git_repository" "git_repository_commit@ commit(const string&in author, const string&in author_email, const string&in committer, const string&in committer_email, const string&in message, const string&in ref = \"HEAD\")"
+objmthd "git_repository" "string commit_diff(git_repository_commit@ commit1, git_repository_commit@ commit2, uint context_lines = 3, uint interhunk_lines = 0, uint flags = 0, uint format = 1, array<string>@ pathspec = {}, const string&in old_prefix = \"a\", const string&in new_prefix = \"b\")"
+objmthd "git_repository" "git_repository_commit@ commit_lookup(const string&in oid)"
+objmthd "git_repository" "git_repository_commit_iterator@ commit_iterate(array<string>@ path_filter = {}, const string&in author_filter = '', const string&in message_filter = '', uint64 min_time_filter = 0, uint64 max_time_filter = 0, uint start = 0, uint count = 0)"
+objmthd "git_repository" "git_repository_entry@ get_entry(uint index)"
+objmthd "git_repository" "int get_entry_count() property"
+objmthd "git_repository" "int get_is_empty() property"
+objmthd "git_repository" "string get_path() property"
+objmthd "git_repository" "string get_workdir() property"
+objmthd "git_repository" "bool get_active() property"
+objbeh "git_repository_entry" 5 "void $beh5()"
+objbeh "git_repository_entry" 6 "void $beh6()"
+objmthd "git_repository_entry" "uint get_ctime() property"
+objmthd "git_repository_entry" "uint get_mtime() property"
+objmthd "git_repository_entry" "uint get_file_size() property"
+objmthd "git_repository_entry" "string get_oid() property"
+objmthd "git_repository_entry" "string get_path() property"
+objbeh "git_repository_commit" 5 "void $beh5()"
+objbeh "git_repository_commit" 6 "void $beh6()"
+objmthd "git_repository_commit" "uint get_time() property"
+objmthd "git_repository_commit" "int get_parent_count() property"
+objmthd "git_repository_commit" "git_repository_commit@ get_parent(uint)"
+objmthd "git_repository_commit" "const string get_id() property"
+objmthd "git_repository_commit" "const string get_message() property"
+objmthd "git_repository_commit" "string get_summary() property"
+objmthd "git_repository_commit" "const string get_body() property"
+objmthd "git_repository_commit" "const string get_raw_header() property"
+objmthd "git_repository_commit" "const string get_committer() property"
+objmthd "git_repository_commit" "const string get_committer_email() property"
+objmthd "git_repository_commit" "const string get_author() property"
+objmthd "git_repository_commit" "const string get_author_email() property"
+objbeh "git_repository_commit_iterator" 5 "void $beh5()"
+objbeh "git_repository_commit_iterator" 6 "void $beh6()"
+objmthd "git_repository_commit_iterator" "git_repository_commit@ get_commit() property"
+objmthd "git_repository_commit_iterator" "git_repository_commit@ opImplCast()"
+objmthd "git_repository_commit_iterator" "bool opPostInc()"
+objbeh "sqlite3statement" 5 "void $beh5()"
+objbeh "sqlite3statement" 6 "void $beh6()"
+access 10000
+objmthd "sqlite3statement" "int step()"
+objmthd "sqlite3statement" "int reset()"
+objmthd "sqlite3statement" "string get_expanded_sql_statement() property"
+objmthd "sqlite3statement" "string get_sql_statement() property"
+objmthd "sqlite3statement" "int get_bind_param_count() property"
+objmthd "sqlite3statement" "int get_column_count() property"
+objmthd "sqlite3statement" "int bind_blob(int, const string&in, bool = true)"
+objmthd "sqlite3statement" "int bind_double(int, double)"
+objmthd "sqlite3statement" "int bind_int(int, int)"
+objmthd "sqlite3statement" "int bind_int64(int, int64)"
+objmthd "sqlite3statement" "int bind_null(int)"
+objmthd "sqlite3statement" "int bind_param_index(const string&in)"
+objmthd "sqlite3statement" "string bind_param_name(int)"
+objmthd "sqlite3statement" "int bind_text(int, const string&in, bool = true)"
+objmthd "sqlite3statement" "int clear_bindings()"
+objmthd "sqlite3statement" "string column_blob(int)"
+objmthd "sqlite3statement" "int column_bytes(int)"
+objmthd "sqlite3statement" "string column_decltype(int)"
+objmthd "sqlite3statement" "double column_double(int)"
+objmthd "sqlite3statement" "int column_int(int)"
+objmthd "sqlite3statement" "int64 column_int64(int)"
+objmthd "sqlite3statement" "string column_name(int)"
+objmthd "sqlite3statement" "int column_type(int)"
+objmthd "sqlite3statement" "string column_text(int)"
+objbeh "sqlite3" 3 "sqlite3@ sqlite3()"
+objbeh "sqlite3" 3 "sqlite3@ sqlite3(const string&in, int = 6)"
+objbeh "sqlite3" 5 "void $beh5()"
+objbeh "sqlite3" 6 "void $beh6()"
+objmthd "sqlite3" "int close()"
+objmthd "sqlite3" "int open(const string&in, int = 6)"
+objmthd "sqlite3" "sqlite3statement@ prepare(const string&in, int&out = void)"
+objmthd "sqlite3" "int execute(const string&in, array<array<string>>@ = null)"
+objmthd "sqlite3" "int64 get_rows_changed() property"
+objmthd "sqlite3" "int64 get_total_rows_changed() property"
+objmthd "sqlite3" "int limit(int id, int val)"
+objmthd "sqlite3" "int set_authorizer(sqlite3authorizer@, const string&in = \"\")"
+objmthd "sqlite3" "int64 get_last_insert_rowid() property"
+objmthd "sqlite3" "void set_last_insert_rowid(int64) property"
+objmthd "sqlite3" "int get_last_error()"
+objmthd "sqlite3" "string get_last_error_text()"
+objmthd "sqlite3" "bool get_active() property"
+objbeh "sqlite_pack" 3 "sqlite_pack@ sqlite_pack()"
+objbeh "sqlite_pack" 5 "void $beh5()"
+objbeh "sqlite_pack" 6 "void $beh6()"
+objmthd "sqlite_pack" "bool open(const string&in filename, const int mode = SQLITE_PACK_OPEN_MODE_READ_ONLY, const string&inout key = \"\")"
+objmthd "sqlite_pack" "bool rekey(const string&inout key)"
+objmthd "sqlite_pack" "bool close()"
+objmthd "sqlite_pack" "bool add_file(const string&in disc_filename, const string&in pack_filename, bool allow_replace = false)"
+objmthd "sqlite_pack" "bool add_directory(const string&in dir, const bool allow_replace = false)"
+objmthd "sqlite_pack" "bool add_memory(const string&in pack_filename, const string&in data, bool allow_replace = false)"
+objmthd "sqlite_pack" "bool delete_file(const string&in pack_filename)"
+objmthd "sqlite_pack" "bool file_exists(const string&in pack_filename) const"
+objmthd "sqlite_pack" "string get_file_name(int64 index) const"
+objmthd "sqlite_pack" "array<string>@ list_files() const"
+objmthd "sqlite_pack" "uint get_file_size(const string&in pack_filename) const"
+objmthd "sqlite_pack" "string read_file(const string&in pack_filename, uint offset_in_file, uint read_byte_count) const"
+objmthd "sqlite_pack" "bool get_active() const property"
+objmthd "sqlite_pack" "uint get_size() const property"
+objmthd "sqlite_pack" "datastream@ open_file(const string&inout file_name, const bool rw)"
+objmthd "sqlite_pack" "void allocate_file(const string&inout file_name, const int64 size, const bool allow_replace = false)"
+objmthd "sqlite_pack" "bool rename_file(const string&inout old, const string&inout new_)"
+objmthd "sqlite_pack" "void clear()"
+objmthd "sqlite_pack" "sqlite3statement@ prepare(const string&inout statement, const bool persistant = false)"
+objmthd "sqlite_pack" "array<string>@ find(const string&inout what, const sqlite_pack_find_mode mode = SQLITE_PACK_FIND_MODE_LIKE)"
+objmthd "sqlite_pack" "array<dictionary@>@ exec(const string&inout sql)"
+objmthd "sqlite_pack" "pack_interface@ opImplCast()"
+objmthd "sqlite_pack" "bool create(const string&in filename, const string&in key = \"\")"
+objmthd "sqlite_pack" "bool open(const string&in filename, const string&in key = \"\")"
+objmthd "sqlite_pack" "bool add_stream(const string&in internal_name, datastream@ ds, const bool allow_replace = false)"
+objmthd "sqlite_pack" "int64 get_file_count() const property"
+objmthd "sqlite_pack" "bool extract_file(const string&in internal_name, const string&in file_on_disk)"
 
 // Functions
 access 1
@@ -8192,6 +8458,14 @@ access 80000000
 func "void sleep(uint)"
 func "void yield()"
 func "void create_coroutine(coroutine@, dictionary@)"
+access 40
+func "string curl_url_encode(const string&in)"
+func "string curl_url_decode(const string&in)"
+access 20000
+func "int git_last_error_class()"
+func "string git_last_error_text()"
+access 10000
+func "int systemd_notify(const string&in state)"
 
 // Properties
 access 1

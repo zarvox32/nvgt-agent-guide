@@ -1,0 +1,5 @@
+class spinlock_mutex_lock {
+	spinlock_mutex_lock(spinlock_mutex@);
+	spinlock_mutex_lock(spinlock_mutex@, uint);
+	void unlock();
+}
