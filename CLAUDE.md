@@ -44,6 +44,32 @@ NVGT is mostly compatible with BGT (Blastbay Gaming Toolkit) scripts but is
 not identical. If you are porting BGT code, do not assume BGT idioms still
 work — verify each API against `ref/api-export/` and `ref/nvgt.txt`.
 
+**Two upstream docs are vendored locally and worth reading before any port:**
+
+- **`ref/bgt/upgrading.md`** — NVGT's official "Upgrading From BGT" manual
+  chapter. Lists missing features, renamed functions, behavioral
+  differences, and renamed key constants. Read this first when starting a
+  port.
+- **`ref/bgt/compat-layer.md`** — reference for the `bgt_compat.nvgt`
+  include (see below). Lists every alias the shim provides.
+
+**The `#include "bgt_compat.nvgt"` shim** is a compatibility include — *not*
+a translator. Adding it to old BGT code remaps function names and key
+constants (`KEY_PRIOR` → `KEY_PAGEUP`, `string_len` → `string.length`,
+etc.) so a lot of code compiles unchanged. It does **not** fix:
+
+- Method-vs-property changes (`array.length` is now `array.length()`).
+- Signature changes (`tts_voice.set_voice(...)` parameters differ).
+- Behavioral differences (encrypted data isn't compatible, screen reader
+  APIs ignore the reader argument, etc.).
+- Reserved-word collisions (`var` is now a type — BGT code using `var` as
+  a variable name will break).
+- Pack file `#include` (use `#pragma embed packname.dat` instead).
+
+Treat the shim as a stop-gap for a quick first compile, then rewrite onto
+native NVGT APIs incrementally. See `docs/pitfalls.md` for the specific
+gotchas worth memorizing.
+
 ## The compile loop is your correctness check
 
 NVGT scripts are compiled by the `nvgt` CLI. **After any change to a `.nvgt`

@@ -42,6 +42,12 @@ COMMIT="$(cd "$TMP/nvgt" && git rev-parse HEAD)"
 COUNT="$(ls "$REF/examples/" | wc -l | tr -d ' ')"
 echo "    $COUNT example files from NVGT @ $COMMIT"
 
+echo "==> Refreshing $REF/bgt/ from samtupy/nvgt..."
+mkdir -p "$REF/bgt"
+cp "$TMP/nvgt/doc/src/manual/-BGT Upgrading+.md" "$REF/bgt/upgrading.md"
+cp "$TMP/nvgt/doc/src/references/include/BGT Compatibility Layer (bgt_compat.nvgt)/!BGT Compatibility Layer.md" "$REF/bgt/compat-layer.md"
+echo "    upgrading.md, compat-layer.md"
+
 echo "==> Regenerating $REF/api-export/ from local NVGT install..."
 DUMP_OUT="$TMP/api-export"
 "$NVGT" "$HERE/scripts/generate_engine_dump.nvgt" "$DUMP_OUT"
